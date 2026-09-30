@@ -2,6 +2,7 @@ import os, json, re
 from groq import Groq
 
 client = Groq(api_key=os.environ["GROQ_API_KEY"])
+MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
 
 # ---- Stage 1: keyword pre-filter (free) ----
 SOFTWARE_HINTS = re.compile(
@@ -60,14 +61,15 @@ def score_batch(jobs: list[dict], batch_size=8) -> list[tuple[int, str]]:
         chunk = jobs[start:start + batch_size]
         try:
             resp = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+                model=MODEL,
                 messages=[
                     {"role": "system", "content": SYSTEM},
                     {"role": "user", "content": PROMPT_TMPL.format(listings=_blob(chunk, start))},
                 ],
                 response_format={"type": "json_object"},
                 temperature=0.1,
-                max_tokens=1200,
+                max_tokens=2000,
+                extra_body={"reasoning_effort: low"},
             )
             data = json.loads(resp.choices[0].message.content)
             for r in data.get("results", []):

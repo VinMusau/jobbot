@@ -3,7 +3,7 @@ from selectolax.parser import HTMLParser
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; JobBot/1.0)"}
 
-def fuzu():
+def fetch_fuzu():
     """Fuzu Kenya — HTML scrape, no API key needed."""
     url = "https://www.fuzu.com/kenya/jobs?query=software"
     r = httpx.get(url, headers=HEADERS, timeout=30, follow_redirects=True)

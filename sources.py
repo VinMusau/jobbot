@@ -1,7 +1,7 @@
-import fuzu
+from fuzu import fetch_fuzu
 import os, httpx
-import jobwebkenya
-import myjobmag_kenya
+from jobwebkenya import fetch_jobwebkenya
+from myjobmag_kenya import fetch_myjobmag
 from selectolax.parser import HTMLParser
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; JobBot/1.0; +mailto:you@example.com)"}
@@ -93,11 +93,11 @@ ALL_SOURCES = [
         remotive, 
         remoteok, 
         jobicy, 
-        adzuna_kenya, 
+        # adzuna_kenya, 
         brightermonday,
-        jobwebkenya,
-        fuzu,
-        myjobmag_kenya,
+        fetch_jobwebkenya,
+        # fetch_fuzu,
+        fetch_myjobmag,
     ]
 
 def fetch_all():

@@ -1,4 +1,9 @@
-def myjobmag():
+import httpx
+from selectolax.parser import HTMLParser
+
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; JobBot/1.0)"}
+
+def fetch_myjobmag():
     url = "https://www.myjobmag.co.ke/search/jobs?q=software"
     r = httpx.get(url, headers=HEADERS, timeout=30, follow_redirects=True)
     r.raise_for_status()
@@ -11,7 +16,9 @@ def myjobmag():
             continue
         if not href.startswith("http"):
             href = "https://www.myjobmag.co.ke" + href
-        out.append({"title": title, "company": "", "url": href,
-                    "location": "Kenya", "description": "",
-                    "source": "myjobmag", "posted_at": None})
+        out.append({
+            "title": title, "company": "", "url": href,
+            "location": "Kenya", "description": "",
+            "source": "myjobmag", "posted_at": None,
+        })
     return out
