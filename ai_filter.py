@@ -4,7 +4,7 @@ from groq import Groq
 client = Groq(api_key=os.environ["GROQ_API_KEY"])
 MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
 
-# ---- Stage 1: keyword pre-filter (free) ----
+# ---- Stage 1: keyword pre-filter ----
 SOFTWARE_HINTS = re.compile(
     r"\b(software|developer|engineer|programmer|full[- ]?stack|back[- ]?end|"
     r"front[- ]?end|web dev|mobile dev|android|ios|flutter|react|node|python|"
@@ -22,7 +22,7 @@ def prefilter(job: dict) -> bool:
         return False
     return True
 
-# ---- Stage 2: LLM scoring (batched) ----
+# ---- Stage 2: LLM scoring ----
 SYSTEM = (
     "You classify job listings for a junior/mid software engineer based in Kenya. "
     "They want: entry or mid level software development/engineering roles, full-time "
@@ -54,8 +54,7 @@ def _blob(jobs, start=0):
         for i, j in enumerate(jobs)
     )
 
-def score_batch(jobs: list[dict], batch_size=8) -> list[tuple[int, str]]:
-    """Returns list of (score, reason) aligned with `jobs`."""
+def score_batch(jobs: list[dict], batch_size: int = 8) -> list[tuple[int, str]]:
     out = [(0, "unscored")] * len(jobs)
     for start in range(0, len(jobs), batch_size):
         chunk = jobs[start:start + batch_size]
@@ -69,7 +68,7 @@ def score_batch(jobs: list[dict], batch_size=8) -> list[tuple[int, str]]:
                 response_format={"type": "json_object"},
                 temperature=0.1,
                 max_tokens=2000,
-                extra_body={"reasoning_effort: low"},
+                extra_body={"reasoning_effort": "low"},
             )
             data = json.loads(resp.choices[0].message.content)
             for r in data.get("results", []):
