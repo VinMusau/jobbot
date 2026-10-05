@@ -1,4 +1,5 @@
 httpx
-selectolax
+selectolax>=1.0
 groq
 python-dotenv
+psycopg[binary]

@@ -1,8 +1,8 @@
-from fuzu import fetch_fuzu
+# from fuzu import fetch_fuzu
 import os, httpx
 from jobwebkenya import fetch_jobwebkenya
 from myjobmag_kenya import fetch_myjobmag
-from selectolax.parser import HTMLParser
+from selectolax.lexbor import LexborHTMLParser as HTMLParser
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; JobBot/1.0; +mailto:you@example.com)"}
 TIMEOUT = 30
