@@ -3,3 +3,9 @@ selectolax>=1.0
 groq
 python-dotenv
 psycopg[binary]
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+pypdf
+python-docx

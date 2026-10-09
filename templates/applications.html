@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="text-xl font-semibold mb-6">Applications</h1>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white border border-gray-200 rounded-lg p-4">
+        <div class="text-2xl font-semibold">{{ stats.applied or 0 }}</div>
+        <div class="text-xs text-gray-500 uppercase tracking-wide mt-1">Applied</div>
+    </div>
+    <div class="bg-white border border-gray-200 rounded-lg p-4">
+        <div class="text-2xl font-semibold">{{ stats.progressed or 0 }}</div>
+        <div class="text-xs text-gray-500 uppercase tracking-wide mt-1">Progressed</div>
+    </div>
+    <div class="bg-white border border-gray-200 rounded-lg p-4">
+        <div class="text-2xl font-semibold">{{ stats.interviewed or 0 }}</div>
+        <div class="text-xs text-gray-500 uppercase tracking-wide mt-1">Interviewed</div>
+    </div>
+    <div class="bg-white border border-gray-200 rounded-lg p-4">
+        <div class="text-2xl font-semibold">{{ stats.offers or 0 }}</div>
+        <div class="text-xs text-gray-500 uppercase tracking-wide mt-1">Offers</div>
+    </div>
+</div>
+
+{% if stats.applied %}
+<div class="text-sm text-gray-500 mb-6">
+    Applied → progressed: {{ "%.0f"|format(100 * (stats.progressed or 0) / stats.applied) }}% ·
+    Applied → interviewed: {{ "%.0f"|format(100 * (stats.interviewed or 0) / stats.applied) }}%
+</div>
+{% endif %}
+
+<div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+    <table class="w-full text-sm">
+        <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
+            <tr>
+                <th class="text-left px-4 py-3">Job</th>
+                <th class="text-left px-4 py-3">Company</th>
+                <th class="text-left px-4 py-3">Status</th>
+                <th class="text-right px-4 py-3">Last event</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in rows %}
+            <tr class="border-t border-gray-100">
+                <td class="px-4 py-3">
+                    <a href="/job/{{ r.id }}" class="hover:underline">{{ r.title }}</a>
+                </td>
+                <td class="px-4 py-3 text-gray-600">{{ r.company or '—' }}</td>
+                <td class="px-4 py-3">
+                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">{{ r.current_status }}</span>
+                </td>
+                <td class="px-4 py-3 text-right text-gray-500 text-xs">
+                    {{ r.last_event_at.strftime('%b %d') }}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="px-4 py-12 text-center text-gray-500">No applications logged yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

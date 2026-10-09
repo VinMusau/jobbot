@@ -31,6 +31,7 @@ jobs:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           TO_EMAIL: ${{ secrets.TO_EMAIL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           MIN_SCORE: "7"
           
       - name: Upload log
